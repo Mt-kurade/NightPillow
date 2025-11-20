@@ -1,0 +1,379 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sleep Pillow: Alarms</title>
+        <link rel="stylesheet" type="text/css" href="/static/Css/Styles.css">
+        <style>
+        .main {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center; /* Center the alarms container */
+            align-items: center;
+            padding: 20px;
+        }
+
+        .alarms-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%; /* Adjust width as needed */
+            max-width: 600px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .add-alarm-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+            color: black;
+        }
+
+        .alarm-card {
+            background: #2d3748;
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .edit-alarm-btn {
+            background: white;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 5px;
+            color: black;
+        }
+
+        .no-alarms {
+            margin-top: 20px;
+            font-style: italic;
+        }
+        /*Modal style below start*/
+
+
+
+        #alarm-modal {
+            display: none; /* Initially hidden */
+            position: fixed; /* Fixed position to cover the entire viewport */
+            z-index: 1; /* Ensure it's on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent background */
+        }
+
+        .modal-content {
+            background-color: #2d3748; /* Darker background for modal */
+            margin: 15% auto; /* Center vertically and horizontally */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Adjust width as needed */
+            max-width: 500px; /* Limit maximum width */
+            border-radius: 10px;
+            position: relative; /* Needed for absolute positioning of close button */
+            color: white; /* Set text color to white */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #alarm-form label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        #alarm-form input[type="text"],
+        #alarm-form input[type="time"],
+        #alarm-form textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            background-color: #4a5568; /* Darker input background */
+            color: white; /* White text for inputs */
+            border: none;
+            border-radius: 4px;
+        }
+
+        #alarm-form button {
+            background-color: #48bb78; /* Green button */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #alarm-form button:hover {
+            background-color: #38a169; /* Darker green on hover */
+        }
+        .alarm-card {
+            background: #2d3748;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: flex; /* Use flexbox for layout */
+            justify-content: space-between; /* Space items evenly */
+            align-items: center; /* Center items vertically */
+        }
+
+        .alarm-info {
+            flex-grow: 1; /* Allow alarm info to take up available space */
+        }
+
+        .alarm-info h3, .alarm-info p {
+            margin: 5px 0; /* Add some spacing */
+        }
+
+        .alarm-card button {
+            background: #e53e3e; /* Red background for delete button */
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        #custom-notification {
+            display: none;
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color:  #415a77;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        #custom-notification h3 {
+            margin: 0;
+        }
+
+        #custom-notification img {
+            width: 24px;
+            height: 24px;
+        }
+
+        #custom-notification p {
+            margin-top: 10px;
+        }
+
+        #custom-notification button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #1b263b;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        </style>
+    </head>
+<body>
+    <div class="top-bar">
+        <h1>Night Pillow</h1>
+    </div>
+    <div class="container">
+        <div class="sidebar">
+            <a href="{% url 'alarms:home' %}">Home</a>
+            <a href="{% url 'alarms:sleep_calculator' %}">Sleep Time Calculator</a>
+            <a href="{% url 'alarms:sleep_data' %}">Sleep Data</a>
+            <a href="{% url 'alarms:reminders' %}">Reminders</a>
+        </div>
+        <div class="main">
+            <div class="alarms-container">
+                <h2>Active Alarms</h2>
+                <button class="add-alarm-btn" onclick="openAlarmModal()">+</button>
+                <div id="alarms-list">
+                    {% if alarms %}
+
+                    {% for alarm in alarms %}
+                    <div class="alarm-card" data-alarm-id="{{ alarm.id }}">
+                        <div class="alarm-info">
+                            <h3>{{ alarm.title }}</h3>
+                            <p>{{ alarm.time|time:"H:i" }}</p>
+                            <p>{{ alarm.message }}</p>
+                        </div>
+                        <button onclick="deleteAlarm('{{ alarm.id }}')">Delete</button>
+                    </div>
+                     {% endfor %}
+
+
+                    {% else %}
+                        <p class="no-alarms">No active alarms</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="alarm-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeAlarmModal()">X</span>
+            <h2>Set a New Alarm</h2>
+            <form id="alarm-form" method="POST">
+                {% csrf_token %}
+                <label for="title">Title:</label>
+                <input type="text" name="title" id="title-input" required>
+                <label for="time">Time:</label>
+                <input type="time" name="time" id="time-input" required>
+                <label for="message">Message:</label>
+                <textarea name="message" id="message-input" required></textarea>
+                <button type="button" onclick="addAlarm()">Save Alarm</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        let alarmTriggered = false;
+        let alarmInterval;
+
+        function openAlarmModal() {
+            document.getElementById("alarm-modal").style.display = "block";
+            document.getElementById("alarm-form").reset();
+        }
+        function closeAlarmModal() {
+            document.getElementById("alarm-modal").style.display = "none";
+        }
+
+
+        function deleteAlarm(alarmId) {
+    console.log("Deleting alarm with ID:", alarmId);
+    if (confirm("Are you sure you want to delete this alarm?")) {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        fetch(`/delete_alarm/${alarmId}/`, {
+            method: "DELETE",
+            headers: {
+                'X-CSRFToken': csrfToken, // Include CSRF token
+            },
+        })
+        .then(response => {
+            console.log("Fetch response:", response);
+            if (response.ok) {
+                const alarmCard = document.querySelector(`.alarm-card[data-alarm-id="${alarmId}"]`);
+                console.log("Found alarm card:", alarmCard);
+                if (alarmCard) {
+                    alarmCard.remove();
+                    console.log("Alarm card removed");
+                } else {
+                    console.error("Alarm card not found in DOM");
+                }
+            } else {
+                console.error("Error deleting alarm:", response.status);
+            }
+        })
+        .catch(err => {
+            console.error("Fetch error:", err);
+        });
+    }
+}
+
+        function addAlarm() {
+            const title = document.getElementById("title-input").value;
+            const time = document.getElementById("time-input").value;
+            const message = document.getElementById("message-input").value;
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            fetch("{% url 'alarms:create_alarm' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrfToken,
+                },
+                body: JSON.stringify({ title, time, message }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Add the new alarm card to the DOM
+                    const newAlarmCard = document.createElement("div");
+                    newAlarmCard.className = "alarm-card";
+                    newAlarmCard.innerHTML = `
+                        <div class="alarm-info">
+                            <h3>${title}</h3>
+                            <p>${time}</p>
+                            <p>${message}</p>
+                        </div>
+                        <button onclick="deleteAlarm('${data.alarm_id}')">Delete</button>
+                    `;
+                    document.getElementById("alarms-list").appendChild(newAlarmCard);
+                    closeAlarmModal(); // Close the modal
+                } else {
+                    console.error("Error adding alarm:", data.error);
+                }
+            })
+            .catch(err => console.error("Error adding alarm:", err));
+        }
+
+        function checkAlarms() {
+            if (alarmTriggered) {
+                return;
+            }
+
+            fetch("{% url 'alarms:check_alarm' %}")
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.trigger) {
+                        alarmTriggered = true;
+                        clearInterval(alarmInterval);
+                        showNotification(data.message);
+                    }
+                })
+                .catch((err) => console.error("Error checking alarms:", err));
+        }
+
+        function showNotification(message) {
+            if ("Notification" in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        const notification = new Notification("Night Pillow Alarm!", {
+                            body: message,
+                            icon: "/static/bell_icon.png",
+                            actions: [{ action: "stop", title: "Stop" }]
+                        });
+
+                        notification.addEventListener('click', () => {
+                            notification.close();
+                            alarmTriggered = false;
+                            alarmInterval = setInterval(checkAlarms, 5000);
+                        });
+                    }
+                });
+            }
+        }
+
+        alarmInterval = setInterval(checkAlarms, 5000);
+    </script>
+</body>
+    
+    </html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sleep Data</title>
+    <link rel="stylesheet" type="text/css" href="/static/Css/Styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        select {
+            font-size: 15px; 
+            align-items: center;
+            justify-content: space-between;
+            background: #778da9;
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-grow: 1;
+            padding: 10px;
+            color: #cccccc;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        input {
+            padding: 5px;
+            color: #000000;
+            cursor: pointer;  
+        }
+        button {
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        #sleepChart {
+            width: 600px;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <h1>Night Pillow</h1>
+    </div>
+    <div class="container">
+        <div class="sidebar">
+            <a href="{% url 'alarms:home' %}" onclick="showPage('home')">Home</a>
+            <a href="{% url 'alarms:sleep_calculator' %}" onclick="showPage('sleep_calculator')">Sleep Time Calculator</a>
+            <a href="{% url 'alarms:sleep_data' %}" onclick="showPage('sleep_data')">Sleep Data</a>
+            <a href="{% url 'alarms:reminders' %}" onclick="showPage('reminders')">Reminders</a>
+        </div>
+
+        <div class="main">
+            <h2>Your Sleep Data</h2>
+            <ul>
+                {% for entry in sleep_records %}
+                    <li>{{ entry.date }} - Duration: {{ entry.duration|floatformat:2 }} hours</li>
+                {% empty %}
+                    
+                {% endfor %}
+            </ul>
+            <canvas id="sleepChart"></canvas> 
+        </div>
+
+        <div class="right-sidebar">
+            <h2>Active Alarms</h2>
+            <ul class="alarm-list">
+                <li class="alarm-item">6:30 AM</li>
+                <li class="alarm-item">7:00 AM</li>
+                <li class="alarm-item">7:30 AM</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Sample data values (replace with your actual data)
+        const sleepLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        const sleepDurations = [6, 8, 5, 7, 9, 4, 6]; // Hours slept
+        const sleepRatings = [4, 5, 3, 4, 5, 2, 3]; // Sleep ratings out of 5
+
+        const ctx = document.getElementById('sleepChart').getContext('2d');
+        const sleepChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: sleepLabels,
+                datasets: [{
+                    label: 'Hours Slept',
+                    data: sleepDurations,
+                    backgroundColor: sleepDurations.map(hours => {
+                        if (hours >= 7) return '#A8FFA3'; // Good sleep (green)
+                        if (hours >= 5) return '#FFE5A3'; // Okay sleep (yellow)
+                        return '#FFA3A3'; // Bad sleep (red)
+                    }),
+                    borderColor: 'white', // White outlines for better visibility
+                    borderWidth: 2,
+                    borderRadius: 5, // Rounded corners for bars
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Hours',
+                            color: 'white' // White Y-axis title
+                        },
+                        ticks: {
+                          color: 'white' // White Y-axis ticks
+                        },
+                        grid: {
+                          color: 'rgba(255, 255, 255, 0.1)' // White grid lines
+                        }
+                    },
+                    x: {
+                      ticks: {
+                        color: 'white' // White X-axis ticks
+                      },
+                      grid: {
+                        color: 'rgba(255, 255, 255, 0.1)' // White grid lines
+                      }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y + ' hours';
+                                }
+                                return label;
+                            },
+                            footer: function(context) {
+                                const index = context[0].dataIndex;
+                                return `Sleep Rating: ${sleepRatings[index]} / 5 stars`;
+                            }
+                        }
+                    },
+                    legend: {
+                        labels: {
+                            generateLabels: function(chart) {
+                                return [
+                                    { text: 'Good Sleep (7+ hours)', fillStyle: 'rgba(168, 255, 163, 0.6)', fontColor: 'white' },
+                                    { text: 'Okay Sleep (5-6 hours)', fillStyle: 'rgba(255, 229, 163, 0.6)', fontColor: 'white' },
+                                    { text: 'Bad Sleep (< 5 hours)', fillStyle: 'rgba(255, 163, 163, 0.6)', fontColor: 'white' }
+                                ];
+                            },
+                            color: 'white' // Set the legend text color to white
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

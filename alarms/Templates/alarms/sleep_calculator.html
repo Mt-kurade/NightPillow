@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sleep Calculator</title>
+    <link rel="stylesheet" type="text/css" href="/static/Css/Styles.css">
+    <style>
+
+        select {
+            font-size: 16px;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            width: 300px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+        }
+        input[type="time"] {
+            font-size: 24px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            width: 200px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .recommendations {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 20px;
+        width: 100%;
+        }
+
+        .recommendations div {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 30px;
+            font-size: 20px;
+            text-align: center;
+            width: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333; /* Dark text color */
+        }
+
+        button {
+            background-color: #48bb78; /* Green button */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <h1>Night Pillow</h1>
+    </div>
+    <div class="container">
+        <div class="sidebar">
+            <a href="{% url 'alarms:home' %}" onclick="showPage('home')">Home</a>
+            <a href="{% url 'alarms:sleep_calculator' %}" onclick="showPage('sleep_calculator')">Sleep Time Calculator</a> 
+            <a href="{% url 'alarms:sleep_data' %}" onclick="showPage('sleep_data')">Sleep Data</a>
+            <a href="{% url 'alarms:reminders' %}" onclick="showPage('reminders')">Reminders</a>
+        </div>
+        <div class="main">
+            <h2>Sleep Time Calculator</h2>
+            <div class="form-container">
+                <form id="sleepForm">
+                    <label for="sleepOption"></label>
+                    <select id="sleepOption">
+                        <option value="wake">I want to wake up at</option>
+                        <option value="sleep">I want to get to bed at</option>
+                    </select>
+                    <br>
+                    <input type="time" id="timeInput" required>
+                    <br>
+                    <button type="submit">Calculate</button>
+                </form>
+                <div class="recommendations" id="recommendations"></div>
+            </div>
+        </div>
+        <div class="right-sidebar">
+            <h2>Active Alarms</h2>
+            <ul class="alarm-list">
+                <li class="alarm-item">6:30 AM</li>
+                <li class="alarm-item">7:00 AM</li>
+                <li class="alarm-item">7:30 AM</li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        document.getElementById('sleepForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            let option = document.getElementById('sleepOption').value;
+            let timeInput = document.getElementById('timeInput').value;
+            let recommendationsDiv = document.getElementById('recommendations');
+            recommendationsDiv.innerHTML = "";
+            
+            if (timeInput) {
+                let [hours, minutes] = timeInput.split(":").map(Number);
+                let times = [];
+                let labels = [];
+                let colors = [];
+
+                if (option === "wake") {
+                    times = [9.5, 9, 8, 7.5, 6, 5.5].map(cycles => { // Grouped good, okay, bad
+                        let sleepHour = hours - (cycles * 1.5);
+                        let sleepMinutes = minutes;
+                        if (sleepHour < 0) sleepHour += 24;
+                        let extraMinutes = (cycles * 1.5 - Math.floor(cycles * 1.5)) * 60;
+                        sleepMinutes -= extraMinutes;
+                        if (sleepMinutes < 0) {
+                            sleepMinutes += 60;
+                            sleepHour -= 1;
+                            if (sleepHour < 0) sleepHour += 24;
+                        }
+
+                        return `${String(Math.floor(sleepHour)).padStart(2, '0')}:${String(Math.floor(sleepMinutes)).padStart(2, '0')}`;
+                    });
+                    labels = ["Good", "Good", "Okay", "Okay", "Bad", "Bad"];
+                    colors = ["#A8FFA3", "#A8FFA3", "#FFE5A3", "#FFE5A3", "#FFA3A3", "#FFA3A3"];
+                } else {
+                    times = [9.5, 9, 8, 7.5, 6, 5.5].map(cycles => { // Grouped good, okay, bad
+                        let wakeHour = hours + (cycles * 1.5);
+                        let wakeMinutes = minutes;
+                        if (wakeHour >= 24) wakeHour -= 24;
+                        let extraMinutes = (cycles * 1.5 - Math.floor(cycles * 1.5)) * 60;
+                        wakeMinutes += extraMinutes;
+                        if (wakeMinutes >= 60) {
+                            wakeMinutes -= 60;
+                            wakeHour += 1;
+                            if (wakeHour >= 24) wakeHour -= 24;
+                        }
+
+                        return `${String(Math.floor(wakeHour)).padStart(2, '0')}:${String(Math.floor(wakeMinutes)).padStart(2, '0')}`;
+                    });
+                    labels = ["Good", "Good", "Okay", "Okay", "Bad", "Bad"];
+                    colors = ["#A8FFA3", "#A8FFA3", "#FFE5A3", "#FFE5A3", "#FFA3A3", "#FFA3A3"];
+                }
+                
+                times.forEach((time, index) => {
+                    let div = document.createElement("div");
+                    div.textContent = `${labels[index]} Timing: ${time}`;
+                    div.style.backgroundColor = colors[index];
+                    div.style.padding = "15px";
+                    div.style.margin = "10px 0";
+                    div.style.borderRadius = "30px";
+                    div.style.fontSize = "20px";
+                    div.style.textAlign = "center";
+                    div.style.display = "flex";
+                    div.style.alignItems = "center";
+                    div.style.justifyContent = "center";
+                    div.style.color = "#333";
+                    recommendationsDiv.appendChild(div);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
