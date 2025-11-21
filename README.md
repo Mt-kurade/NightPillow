@@ -1,14 +1,13 @@
-#Sleep Manager 
+# Sleep Manager
+This project was made with an objective of benefiting me when I had the most trashy sleep schedule. 
 
-This project was made with an objective of benefiting 
-
-Features: 
+## Features: 
 1. Sleep Cycle Calculator
 2. Sleep Progress Tracker
 3. Data analytics
 4. Smart alerts and browser notifications
 
-Notice:
+## Notice:
 This project is a bit old (I made it for my IB PCUP a year ago), so im not very sure about how well the functions are working, but I am sure the Sleep Cycle Calcualtor, Sleep Progress Tracker and the alert with notification system work. There might be a little problem with the analytis page.
 
 PCUP documentation for the project (if u want to see the process of developing this)(It recieved a 6/7 against my better judgement :((( ):
