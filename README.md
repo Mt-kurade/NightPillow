@@ -1,5 +1,5 @@
 # Sleep Manager
-This project was made with an objective of benefiting me when I had the most trashy sleep schedule. 
+This project was made with an objective of benefiting me when I had the most trashy sleep schedule (and that to combined with mock exams comming, my life was sortof hell. So I made this to help myself (or atleast I tryed )) 
 
 ## Features: 
 1. Sleep Cycle Calculator : Based on the calcualtions for REM cycle, before going to sleep you can check for what time would be ideal to wake up. 
