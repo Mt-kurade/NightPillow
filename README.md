@@ -2,10 +2,10 @@
 This project was made with an objective of benefiting me when I had the most trashy sleep schedule. 
 
 ## Features: 
-1. Sleep Cycle Calculator
-2. Sleep Progress Tracker
-3. Data analytics
-4. Smart alerts and browser notifications
+1. Sleep Cycle Calculator (You can input how much sleep you had for the previous night and rate it aswell)
+3. Sleep Progress Tracker
+4. Data analytics :  Graph for hours of sleep over date (also user rating for that sleep cycle, and also determines wheater that sleep is good, bad or okay) 
+5. Smart alerts and browser notifications
 
 ## Notice:
 This project is a bit old (I made it for my IB PCUP a year ago), so im not very sure about how well the functions are working, but I am sure the Sleep Cycle Calcualtor, Sleep Progress Tracker and the alert with notification system work. There might be a little problem with the analytis page.
