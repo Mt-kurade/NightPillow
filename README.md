@@ -2,8 +2,8 @@
 This project was made with an objective of benefiting me when I had the most trashy sleep schedule. 
 
 ## Features: 
-1. Sleep Cycle Calculator (You can input how much sleep you had for the previous night and rate it aswell)
-3. Sleep Progress Tracker
+1. Sleep Cycle Calculator : Based on the calcualtions for REM cycle, before going to sleep you can check for what time would be ideal to wake up. 
+3. Sleep Progress Tracker :(You can input how much sleep you had for the previous night and rate it as well) 
 4. Data analytics :  Graph for hours of sleep over date (also user rating for that sleep cycle, and also determines wheater that sleep is good, bad or okay) 
 5. Alerts and browser notifications: You can set alerts within the browser either for going to sleep or tasks to complete before going to sleep 
 
