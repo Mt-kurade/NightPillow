@@ -1,5 +1,6 @@
 # Sleep Manager
 This project was made with an objective of benefiting me when I had the most trashy sleep schedule (and that to combined with mock exams comming, my life was sortof hell. So I made this to help myself (or atleast I tried)) 
+It was made using Django to test how much I learned so far.
 
 ## Features: 
 1. Sleep Cycle Calculator : Based on the calcualtions for REM cycle, before going to sleep you can check for what time would be ideal to wake up. 
@@ -14,8 +15,9 @@ The full documentation of building this project is in the drive below, it was al
 https://drive.google.com/file/d/1cD_mxnX_CpdroWAPOw2petT1tZLdu7yU/view?usp=sharing
 
 Activating ur project step by step (In terminal): 
+
 ```bash
-python -m venv venv #create an virtual environment 
+python -m venv venv #create a virtual environment 
 venv\Scripts\activate # For windows users 
 pip install -r requirements.txt # Install dependencies
 python manage.py runserver #Application Run
