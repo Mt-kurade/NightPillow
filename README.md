@@ -1,4 +1,4 @@
-# Sleep Manager
+# Sleep Manager 
 This project was made with an objective of benefiting me when I had the most trashy sleep schedule (and that to combined with mock exams comming, my life was sortof hell. So I made this to help myself (or atleast I tried)) 
 It was made using Django to test how much I learned so far.
 
