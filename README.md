@@ -1,5 +1,5 @@
 # Sleep Manager 
-This project was made with an objective of benefiting me when I had the most trashy sleep schedule (and that to combined with mock exams comming, my life was sortof hell. So I made this to help myself (or atleast I tried)) 
+This project was made with an objective of benefiting me when I had the most trashy sleep schedule (and that to combined with mock exams comming, my life was sortof hell. So I made this to help myself ) 
 It was made using Django to test how much I learned so far.
 
 ## Features: 
@@ -11,7 +11,7 @@ It was made using Django to test how much I learned so far.
 ## Notice:
 This project is a bit old (I made it for my IB PCUP a year ago), so im not very sure about how well the functions are working, but I am sure the Sleep Cycle Calcualtor, Sleep Progress Tracker and the alert with notification system work. There might be a little problem with the analytis page.
 
-The full documentation of building this project is in the drive below, it was also my Design PCUP documentation (if u want to see the process of developing this)(It recieved a 6/7 against my better judgement :((( ):
+The full documentation of building this project is in the drive below, it was also my Design PCUP documentation:
 https://drive.google.com/file/d/1cD_mxnX_CpdroWAPOw2petT1tZLdu7yU/view?usp=sharing
 
 Activating ur project step by step (In terminal): 
